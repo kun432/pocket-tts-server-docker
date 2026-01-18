@@ -16,6 +16,7 @@ WORKDIR /app
 
 # Copy built environment from builder
 COPY --from=builder /app /app
+COPY --from=builder /root/.cache/uv /root/.cache/uv
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
