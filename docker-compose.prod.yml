@@ -1,0 +1,3 @@
+services:
+  pocket-tts:
+    image: ghcr.io/kun432/pocket-tts:latest

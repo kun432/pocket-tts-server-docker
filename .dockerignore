@@ -1,0 +1,16 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.vscode
+.idea
+
+# Output
+*.wav
+output

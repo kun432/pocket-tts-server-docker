@@ -1,0 +1,17 @@
+# Output files
+*.wav
+*.mp3
+output/
+
+# Docker volumes
+.docker/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
