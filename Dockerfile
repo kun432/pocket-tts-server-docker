@@ -1,9 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12-slim AS builder
-
-# Install uv in the build stage
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+FROM ghcr.io/astral-sh/uv:0.9.26-python3.12-trixie-slim AS builder
 
 # Create venv and install pocket-tts from package
 WORKDIR /app
@@ -14,7 +11,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install --python /app/.venv/bin/python pocket-tts
 
 # Runtime stage
-FROM python:3.12-slim
+FROM ghcr.io/astral-sh/uv:0.9.26-python3.12-trixie-slim
 
 WORKDIR /app
 ENV PATH="/app/.venv/bin:${PATH}"
