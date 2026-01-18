@@ -4,6 +4,8 @@ FROM ghcr.io/astral-sh/uv:debian AS builder
 
 # Clone the official pocket-tts repository
 WORKDIR /app
+ENV UV_CACHE_DIR=/root/.cache/uv
+ENV UV_PYTHON_CACHE_DIR=/root/.cache/uv/python
 RUN git clone --depth 1 https://github.com/kyutai-labs/pocket-tts.git .
 
 # Install dependencies and build
@@ -13,6 +15,8 @@ RUN uv sync --frozen --no-dev
 FROM ghcr.io/astral-sh/uv:debian
 
 WORKDIR /app
+ENV UV_CACHE_DIR=/root/.cache/uv
+ENV UV_PYTHON_CACHE_DIR=/root/.cache/uv/python
 
 # Copy built environment from builder
 COPY --from=builder /app /app
