@@ -1,26 +1,26 @@
 # syntax=docker/dockerfile:1
 
-FROM ghcr.io/astral-sh/uv:debian AS builder
+FROM python:3.12-slim AS builder
 
-# Clone the official pocket-tts repository
+# Install uv in the build stage
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Create venv and install pocket-tts from package
 WORKDIR /app
-ENV UV_CACHE_DIR=/root/.cache/uv
-ENV UV_PYTHON_CACHE_DIR=/root/.cache/uv/python
-RUN git clone --depth 1 https://github.com/kyutai-labs/pocket-tts.git .
-
-# Install dependencies and build
-RUN uv sync --frozen --no-dev
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv venv /app/.venv && \
+    uv pip install --python /app/.venv/bin/python pocket-tts
 
 # Runtime stage
-FROM ghcr.io/astral-sh/uv:debian
+FROM python:3.12-slim
 
 WORKDIR /app
-ENV UV_CACHE_DIR=/root/.cache/uv
-ENV UV_PYTHON_CACHE_DIR=/root/.cache/uv/python
+ENV PATH="/app/.venv/bin:${PATH}"
 
-# Copy built environment from builder
-COPY --from=builder /app /app
-COPY --from=builder /root/.cache/uv /root/.cache/uv
+# Copy only the virtual environment from builder
+COPY --from=builder /app/.venv /app/.venv
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh

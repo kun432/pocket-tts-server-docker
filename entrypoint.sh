@@ -9,4 +9,4 @@ if [ -n "$POCKET_TTS_VOICE" ]; then
   ARGS="$ARGS --voice $POCKET_TTS_VOICE"
 fi
 
-exec uv run pocket-tts serve $ARGS
+exec /app/.venv/bin/pocket-tts serve $ARGS
