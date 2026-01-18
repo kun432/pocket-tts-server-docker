@@ -45,7 +45,7 @@ jobs:
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          tags: ghcr.io/${{ github.repository }}:${{ matrix.arch }}-${{ github.ref_name }}
+          tags: ghcr.io/${{ github.repository_owner }}/pocket-tts-server:${{ matrix.arch }}-${{ github.ref_name }}
           labels: |
             org.opencontainers.image.licenses=MIT
             org.opencontainers.image.source=https://github.com/kyutai-labs/pocket-tts
@@ -74,7 +74,7 @@ jobs:
 
       - name: Create manifest list and push
         run: |
-          IMAGE="ghcr.io/${{ github.repository }}"
+          IMAGE="ghcr.io/${{ github.repository_owner }}/pocket-tts-server"
           TAG="${{ github.ref_name }}"
 
           echo "Creating manifest list for ${IMAGE}:${TAG}"
