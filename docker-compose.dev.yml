@@ -1,0 +1,27 @@
+services:
+  pocket-tts:
+    build: .
+    container_name: pocket-tts
+    ports:
+      - "8000:8000"
+    environment:
+      - POCKET_TTS_HOST=${POCKET_TTS_HOST:-0.0.0.0}
+      - POCKET_TTS_PORT=${POCKET_TTS_PORT:-8000}
+      - POCKET_TTS_VOICE=${POCKET_TTS_VOICE:-}
+      - HF_TOKEN=${HF_TOKEN:-}
+      # Voice selection (optional)
+      # Built-in: alba, marius, javert, jean, fantine, cosette, eponine, azelma
+      # HuggingFace URL: hf://kyutai/tts-voices/alba-mackenna/casual.wav
+      # Local file: /voices/custom.wav (requires volume mount below)
+    volumes:
+      - pocket-tts-hf-cache:/root/.cache/huggingface
+      - pocket-tts-cache:/root/.cache/pocket_tts
+      # Uncomment to use local voice files
+      # - ./voices:/voices:ro
+    restart: unless-stopped
+
+volumes:
+  pocket-tts-hf-cache:
+    driver: local
+  pocket-tts-cache:
+    driver: local

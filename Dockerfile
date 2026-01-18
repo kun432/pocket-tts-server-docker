@@ -3,7 +3,7 @@
 FROM ghcr.io/astral-sh/uv:debian AS builder
 
 # Clone the official pocket-tts repository
-WORKDIR /src
+WORKDIR /app
 RUN git clone --depth 1 https://github.com/kyutai-labs/pocket-tts.git .
 
 # Install dependencies and build
@@ -15,7 +15,7 @@ FROM ghcr.io/astral-sh/uv:debian
 WORKDIR /app
 
 # Copy built environment from builder
-COPY --from=builder /src /app
+COPY --from=builder /app /app
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh

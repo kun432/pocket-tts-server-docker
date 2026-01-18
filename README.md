@@ -8,10 +8,10 @@ Docker image for [Kyutai Labs](https://github.com/kyutai-labs/pocket-tts)'s pock
 
 ```bash
 # Local build (for development)
-docker compose up -d --build
+docker compose -f docker-compose.dev.yml up -d --build
 
 # Use pre-built image (for production)
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml up -d
 ```
 
 Then open http://localhost:8000 in your browser.
@@ -19,7 +19,7 @@ Then open http://localhost:8000 in your browser.
 ### Using Docker directly
 
 ```bash
-docker run -d -p 8000:8000 ghcr.io/kun432/pocket-tts:latest
+docker run -d -p 8000:8000 ghcr.io/kun432/pocket-tts-server:v0.0.1
 ```
 
 ## Configuration
@@ -29,6 +29,16 @@ docker run -d -p 8000:8000 ghcr.io/kun432/pocket-tts:latest
 | `POCKET_TTS_HOST` | `0.0.0.0` | Host address to bind to |
 | `POCKET_TTS_PORT` | `8000` | Port to listen on |
 | `POCKET_TTS_VOICE` | - | Voice to use (see below) |
+| `HF_TOKEN` | - | Hugging Face token (required only for voice cloning) |
+
+### .env Example
+
+Create `.env` from `.env.example` and set your token if you use voice cloning.
+
+Example:
+```
+HF_TOKEN=your_token_here
+```
 
 ### Custom Port Example
 
@@ -43,7 +53,7 @@ ports:
 Or with Docker:
 
 ```bash
-docker run -d -p 8080:8080 -e POCKET_TTS_PORT=8080 ghcr.io/kun432/pocket-tts:latest
+docker run -d -p 8080:8080 -e POCKET_TTS_PORT=8080 ghcr.io/kun432/pocket-tts-server:v0.0.1
 ```
 
 ## Voice Selection
@@ -90,7 +100,7 @@ docker run -d \
   -p 8000:8000 \
   -e POCKET_TTS_VOICE=/voices/custom.wav \
   -v $(pwd)/voices:/voices:ro \
-  ghcr.io/kun432/pocket-tts:latest
+  ghcr.io/kun432/pocket-tts-server:v0.0.1
 ```
 
 ## Volumes
@@ -111,7 +121,7 @@ Multi-platform images available for:
 **Pull the image:**
 
 ```bash
-docker pull ghcr.io/kun432/pocket-tts:latest
+docker pull ghcr.io/kun432/pocket-tts-server:v0.0.1
 ```
 
 ## About

@@ -1,17 +1,18 @@
 services:
   pocket-tts:
-    build: .
+    image: ghcr.io/kun432/pocket-tts-server:v0.0.1
     container_name: pocket-tts
     ports:
       - "8000:8000"
     environment:
-      - POCKET_TTS_HOST=0.0.0.0
-      - POCKET_TTS_PORT=8000
+      - POCKET_TTS_HOST=${POCKET_TTS_HOST:-0.0.0.0}
+      - POCKET_TTS_PORT=${POCKET_TTS_PORT:-8000}
       # Voice selection (optional)
       # Built-in: alba, marius, javert, jean, fantine, cosette, eponine, azelma
       # HuggingFace URL: hf://kyutai/tts-voices/alba-mackenna/casual.wav
       # Local file: /voices/custom.wav (requires volume mount below)
-      - POCKET_TTS_VOICE=
+      - POCKET_TTS_VOICE=${POCKET_TTS_VOICE:-}
+      - HF_TOKEN=${HF_TOKEN:-}
     volumes:
       - pocket-tts-hf-cache:/root/.cache/huggingface
       - pocket-tts-cache:/root/.cache/pocket_tts
@@ -35,9 +36,7 @@ services:
           echo 'Waiting for pocket-tts to be ready...'
           sleep 3
         done
-        curl -s -X POST http://pocket-tts:8000/tts \
-          -F 'text=Hello' \
-          -o /dev/null
+        curl -s -X POST http://pocket-tts:8000/tts --form-string 'text=Hello' -o /dev/null
         echo 'Warmup complete! The service is ready.'
       "
     restart: "no"

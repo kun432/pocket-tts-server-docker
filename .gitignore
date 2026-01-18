@@ -15,3 +15,6 @@ output/
 
 # OS
 .DS_Store
+
+# Env
+.env
